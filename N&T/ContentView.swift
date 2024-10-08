@@ -27,7 +27,8 @@ struct ContentView: View {
                     Label("Add", systemImage: "plus")
                 }
         }
-        .accentColor(Color.blue.opacity(0.7))
+        .accentColor(Theme.primaryColor)
+        .background(Theme.backgroundColor)
     }
 }
 

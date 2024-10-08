@@ -36,16 +36,37 @@ struct ContentRow: View {
     let content: Content
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(content.title ?? "")
-                .font(.headline)
-            Text(content.date ?? Date(), style: .time)
-                .font(.subheadline)
-            Text(content.tag ?? "")
-                .font(.caption)
-                .padding(4)
-                .background(content.tag == "Notes" ? Color.blue.opacity(0.3) : Color.red.opacity(0.3))
-                .cornerRadius(4)
+        HStack {
+            if let imageData = content.imageData, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 60, height: 60)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } else {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(content.tag == "Notes" ? Theme.primaryColor : Theme.secondaryColor)
+                    .frame(width: 60, height: 60)
+                    .overlay(
+                        Image(systemName: content.tag == "Notes" ? "note.text" : "brain")
+                            .foregroundColor(.white)
+                    )
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(content.title ?? "")
+                    .font(.headline)
+                    .foregroundColor(Theme.textColor)
+                Text(content.date ?? Date(), style: .date)
+                    .font(.subheadline)
+                    .foregroundColor(Theme.textColor.opacity(0.7))
+                Text(content.tag ?? "")
+                    .font(.caption)
+                    .padding(4)
+                    .background(content.tag == "Notes" ? Theme.primaryColor.opacity(0.3) : Theme.secondaryColor.opacity(0.3))
+                    .cornerRadius(4)
+            }
         }
+        .padding(.vertical, 8)
     }
 }
